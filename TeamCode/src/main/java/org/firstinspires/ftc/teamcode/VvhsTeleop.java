@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,11 +20,8 @@ public class VvhsTeleop extends LinearOpMode
     DcMotorEx outputLeft;
     // Hasn't been tested yet.
     CRServo leftIntake;
-
     CRServo rightIntake;
-
     CRServo carousel;
-
     //left clockwise
     //right counter
 
@@ -67,8 +63,6 @@ public class VvhsTeleop extends LinearOpMode
         }
     }
 
-
-
     public void ChangeMotorPowerSpeed()//changes MOTOR MOVEMENT Speed using M1 and M@
     {
         telemetry.addData("setPowerSpeed", "called");
@@ -84,7 +78,6 @@ public class VvhsTeleop extends LinearOpMode
             //If motor speed is greater then -1 then decrease by .1
             motorSpeed += motorSpeed > 0.2 ? -0.1 : 0;
         }
-
         telemetry.addData("motor_speed", motorSpeed);
     }
     public void setMotorsPower(double fLSpeed,double fRSpeed,double rLSpeed,double rRSpeed)//function to set all motors to the same speed
@@ -193,7 +186,6 @@ public class VvhsTeleop extends LinearOpMode
             telemetry.addData("joystick X:", gamepad1.right_stick_x);
             setMotorsPower(-motorSpeed, -motorSpeed, -motorSpeed, -motorSpeed);
         }
-
     }
     public void TurnLeft()
     {
