@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -8,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp(name = "VvhsTeleop")
-public class VvhsTeleop extends OpMode
+public class VvhsTeleop extends LinearOpMode
 {
 
     DcMotor FrontLeft;
@@ -31,7 +32,7 @@ public class VvhsTeleop extends OpMode
     double motorSpeed = 0.2;
 
     @Override
-    public void init()//initalizes all Motors and servos.
+    public void runOpMode()//initalizes all Motors and servos.
     {
         telemetry.addData("Initialize", "called");
         FrontLeft = hardwareMap.get(DcMotor.class,"FrontLeft");// MOTOR 0
@@ -52,20 +53,18 @@ public class VvhsTeleop extends OpMode
         outputLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         outputRight.setDirection(DcMotorSimple.Direction.REVERSE);
-    }
-
-    @Override
-    public void loop()//runs 50x a second.
-    {
-        ChangeMotorPowerSpeed();
-        ForwardMovement();
-        BackwardMovement();
-        StrafeLeft();
-        StrafeRight();
-        ServoMovement();
-        TurnRight();
-        TurnLeft();
-        LaunchMotors();
+        waitForStart();
+        while(opModeIsActive()) {
+            ChangeMotorPowerSpeed();
+            ForwardMovement();
+            BackwardMovement();
+            StrafeLeft();
+            StrafeRight();
+            ServoMovement();
+            TurnRight();
+            TurnLeft();
+            LaunchMotors();
+        }
     }
 
 
