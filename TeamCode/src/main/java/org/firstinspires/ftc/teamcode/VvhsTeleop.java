@@ -178,18 +178,14 @@ public class VvhsTeleop extends LinearOpMode
             setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,motorSpeed);
 //            setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,-motorSpeed); ROTATE RIGHT????
         }
-        else
-        {
+        else {
             FrontLeft.setPower(0.0);
             FrontRight.setPower(0.0);
             RearLeft.setPower(0.0);
             RearRight.setPower(0.0);
 
         }
-
-
     }
-
     public void TurnRight()
     {
         if(gamepad1.right_stick_x>0)
@@ -199,7 +195,6 @@ public class VvhsTeleop extends LinearOpMode
         }
 
     }
-
     public void TurnLeft()
     {
         if(gamepad1.right_stick_x<0)
@@ -207,7 +202,6 @@ public class VvhsTeleop extends LinearOpMode
             telemetry.addData("joystick X:", gamepad1.right_stick_x);
             setMotorsPower(motorSpeed, motorSpeed, motorSpeed, motorSpeed);
         }
-
     }
 
     public void ServoMovement()
@@ -225,7 +219,7 @@ public class VvhsTeleop extends LinearOpMode
 //            leftIntake.setPower(100);
 //            rightIntake.setPower(-100);
 //        }
-        if(gamepad1.left_trigger>0.1)
+        if(gamepad2.left_trigger>0.1)
         {
             carousel.setPower(-0.67);
         }
@@ -239,7 +233,7 @@ public class VvhsTeleop extends LinearOpMode
     public void LaunchMotors()
     {
         //outputRight.setVelocity(2800);
-        if(gamepad1.right_trigger>0.4)
+        if(gamepad2.right_trigger>0.4)
         {
             telemetry.addData("Shooting velo", outputRight.getVelocity());
             telemetry.addData("Shooting Motor Speed", outputRight.getPower());
