@@ -118,7 +118,6 @@ public class VvhsTeleop extends LinearOpMode
     {
         if(gamepad1.left_stick_y > 0)// straight backward
         {
-            telemetry.addData("Left Joy Stick -Y", "called");
 
             //Move the robot in the reverse direction
             setMotorsPower(motorSpeed,-motorSpeed,motorSpeed,-motorSpeed);
@@ -228,6 +227,7 @@ public class VvhsTeleop extends LinearOpMode
         if(gamepad2.right_trigger>0.4)
         {
             telemetry.addData("Shooting velo", outputRight.getVelocity());
+            telemetry.addData("Shooting velo", outputLeft.getVelocity());
             telemetry.addData("Shooting Motor Speed", outputRight.getPower());
             outputRight.setVelocity(2800);
             outputLeft.setVelocity(2800);
@@ -239,5 +239,18 @@ public class VvhsTeleop extends LinearOpMode
         }
     }
 
+    /* Return a boolean if the analog stick is inside the specified zone for a certain direction
+    xPos: The x value of the
+    yPos:
+    buffSize:
+    */
+    public boolean checkingBounds(double xPos, double yPos, double buffSize)
+    {
+        if(gamepad2.left_stick_x > 0 && gamepad2.left_stick_y < 0)
+        {
+//            if(xPos - buffZise)
+        }
 
+        return false;
+    }
 }
