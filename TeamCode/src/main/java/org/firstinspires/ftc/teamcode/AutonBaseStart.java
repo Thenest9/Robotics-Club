@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcontroller.external.samples.RobotAutoDriveByGyro_Linear.HEADING_THRESHOLD;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -9,10 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
-@Autonomous(name = "Auton", group = "Autonomous")
-public class Auton extends LinearOpMode
+@Autonomous(name = "AutonBaseStart")
+public class AutonBaseStart extends LinearOpMode
 {
 
     DcMotor FrontLeft,FrontRight,RearLeft,RearRight;
@@ -35,7 +31,7 @@ public class Auton extends LinearOpMode
 
         carousel = hardwareMap.get(CRServo.class, "Carousel");
 
-        outputRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//
+        outputRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         outputLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         outputRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -44,11 +40,11 @@ public class Auton extends LinearOpMode
 
         if (opModeIsActive())
         {
-            driveBackward(0.5, 3000);     // Drive backward at 50% power for 3 seconds
-            shoot(2000, 3000);               // Shoot at 2000 velocity for 3 seconds
+            driveBackward(0.5, 3000);// Drive backward at 50% power for 3 seconds
+            shoot(2000, 3000);// Shoot at 2000 velocity for 3 seconds
         }
     }
-    public void setMotorsPower(double fLSpeed,double fRSpeed,double rLSpeed,double rRSpeed)
+    public void setMotorsPower(double fLSpeed,double fRSpeed,double rLSpeed,double rRSpeed)//function to set all motors to the same speed
     {
         //set the powers to drive the robot
         FrontLeft.setPower(fLSpeed);
@@ -59,27 +55,23 @@ public class Auton extends LinearOpMode
     // Helper to set power to all drive motors
     private void driveBackward(double power, int timeMillis)
     {
-        setMotorsPower(power,-power,power,-power); // Positive power = backward
+        setMotorsPower(power,-power,power,-power);
         sleep(timeMillis);//wait that much time
-        setMotorsPower(0,0,0,0);//set the speed hack to 0
+        setMotorsPower(0,0,0,0);//set the speed back to 0
     }
-
     private void shoot(int velocity, int durationMillis)
     {
         outputRight.setVelocity(velocity);//the right output speed is set to 2000
-        outputLeft.setVelocity(velocity);//the right output speed is set to 2000
+        outputLeft.setVelocity(velocity);//the left output speed is set to 2000
 
-        telemetry.addData("Shooter", "Firing at velocity: %d", velocity);
-        telemetry.update();
+        telemetry.addData("Right Shooter", "Firing at velocity: %d", outputRight.getVelocity());
+        telemetry.addData("Left Shooter", "Firing at velocity: %d", outputLeft.getVelocity());
 
-        sleep(durationMillis);
+        sleep(durationMillis);//
 
-        outputRight.setPower(0);
-        outputLeft.setPower(0);
+        outputRight.setPower(0.0);
+        outputLeft.setPower(0.0);
 
         telemetry.addData("Shooter", "Stopped");
-        telemetry.update();
-
     }
-
 }
