@@ -59,18 +59,18 @@ public class AutonBaseStart extends LinearOpMode
         sleep(timeMillis);//wait that much time
         setMotorsPower(0,0,0,0);//set the speed back to 0
     }
-    private void shoot(int velocity, int durationMillis)
+    public void shoot(int velocity, int durationMillis)
     {
+        carousel.setPower(-0.67);
         outputRight.setVelocity(velocity);//the right output speed is set to 2000
         outputLeft.setVelocity(velocity);//the left output speed is set to 2000
 
-        telemetry.addData("Right Shooter", "Firing at velocity: %d", outputRight.getVelocity());
-        telemetry.addData("Left Shooter", "Firing at velocity: %d", outputLeft.getVelocity());
+        sleep(durationMillis);
+        carousel.setPower(-0.67);
+        sleep(durationMillis);
 
-        sleep(durationMillis);//
-
-        outputRight.setPower(0.0);
-        outputLeft.setPower(0.0);
+        outputRight.setPower(0);
+        outputLeft.setPower(0);
 
         telemetry.addData("Shooter", "Stopped");
     }
