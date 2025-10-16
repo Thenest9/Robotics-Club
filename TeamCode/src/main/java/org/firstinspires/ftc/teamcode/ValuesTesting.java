@@ -17,5 +17,6 @@ public class ValuesTesting extends OpMode
         telemetry.addData("Right trigger:", gamepad1.right_trigger);
         telemetry.addData("Left Joystick:", gamepad1.left_stick_x+" , "+ gamepad1.left_stick_y);
         telemetry.addData("Right Joystick:", gamepad1.right_stick_x+" , "+ gamepad1.right_stick_x);
+        //possibly add code to test velo
     }
 }
