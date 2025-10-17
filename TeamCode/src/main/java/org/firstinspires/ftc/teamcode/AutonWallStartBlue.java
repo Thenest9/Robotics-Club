@@ -45,7 +45,7 @@ public class AutonWallStartBlue extends LinearOpMode
             StrafeLeft();
             TurnLeft();
             sleep(1000);
-            Shoot(2800,5000);
+            Shoot(1750,5000);
 
         }
     }
@@ -70,6 +70,8 @@ public class AutonWallStartBlue extends LinearOpMode
     public void TurnLeft()
     {
         setMotorsPower(motorSpeed, motorSpeed, motorSpeed, motorSpeed);
+        sleep(1000);
+        setMotorsPower(0,0,0,0);
     }
     public void Shoot(int velocity, int durationMillis)
     {

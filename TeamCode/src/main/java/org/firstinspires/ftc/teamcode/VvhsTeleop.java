@@ -37,7 +37,7 @@ public class VvhsTeleop extends LinearOpMode
 
 
     double motorSpeed = 0.2;
-    double outputMotorVelocity = 2000;
+//    double outputMotorVelocity = 700;
 
 
     @Override
@@ -68,7 +68,9 @@ public class VvhsTeleop extends LinearOpMode
 
         outputRight.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
-        while(opModeIsActive()) {
+        telemetry.addData("Initia", "working");
+        while(opModeIsActive())
+        {
             ChangeMotorPowerSpeed();
             ForwardMovement();
             BackwardMovement();
@@ -77,8 +79,10 @@ public class VvhsTeleop extends LinearOpMode
             ServoMovement();
             TurnRight();
             TurnLeft();
-            LaunchMotors();
-            ChangeOutputMotorSpeed();
+            LaunchMotors(1750);
+//            ChangeOutputMotorSpeed();
+            telemetry.update();
+
         }
     }
 
@@ -172,10 +176,6 @@ public class VvhsTeleop extends LinearOpMode
         telemetry.addData("joystick X:", gamepad1.left_stick_x);
         if(gamepad1.left_stick_x<0 && (gamepad1.left_stick_y<0.5 && gamepad1.left_stick_y>-0.5))
         {
-
-
-
-
             setMotorsPower(motorSpeed,motorSpeed,-motorSpeed,-motorSpeed);
         }
         else
@@ -247,13 +247,13 @@ public class VvhsTeleop extends LinearOpMode
         }
         else
         {
-            leftIntake.setPower(0.0);
-            rightIntake.setPower(0.0);
+             carousel.setPower(0.0);
+//            rightIntake.setPower(0.0);
         }
     }
 
 
-    public void LaunchMotors()
+    public void LaunchMotors(double outputMotorVelocity)
     {
         //outputRight.setVelocity(2800);
         if(gamepad2.right_trigger>0.4)
@@ -271,37 +271,37 @@ public class VvhsTeleop extends LinearOpMode
     }
 
 
-    public void ChangeOutputMotorSpeed()
-    {
-        if (gamepad1.right_bumper)
-        {
-            if (outputMotorVelocity < 2800)
-            {
-                outputMotorVelocity +=100;
-                outputRight.setVelocity(outputMotorVelocity);
-            }
-            else
-            {
-                outputMotorVelocity = 2800;
-            }
-        }
-        else if (gamepad1.left_bumper)
-        {
-            if (outputMotorVelocity > 0)
-            {
-                outputMotorVelocity = outputMotorVelocity - 100;
-                outputRight.setVelocity(outputMotorVelocity);
-            }
-            else
-            {
-                outputMotorVelocity = 2800;
-            }
-        }
-        else
-        {
-            outputMotorVelocity = 0.0;
-        }
-    }
+//    public void ChangeOutputMotorSpeed()
+//    {
+//        if (gamepad2.right_bumper)
+//        {
+//            if (outputMotorVelocity < 2800)
+//            {
+//                outputMotorVelocity +=100;
+//                outputRight.setVelocity(outputMotorVelocity);
+//            }
+//            else
+//            {
+//                outputMotorVelocity = 2800;
+//            }
+//        }
+//        else if (gamepad2.left_bumper)
+//        {
+//            if (outputMotorVelocity > 0)
+//            {
+//                outputMotorVelocity = outputMotorVelocity - 100;
+//                outputRight.setVelocity(outputMotorVelocity);
+//            }
+//            else
+//            {
+//                outputMotorVelocity = 2800;
+//            }
+//        }
+//        else
+//        {
+//            outputMotorVelocity = 0.0;
+//        }
+//    }
 
     /* Checks if the current postion of the controller is inside the specified range according to the buffer
        posX: The position at which the x value of the controller should be
@@ -309,27 +309,5 @@ public class VvhsTeleop extends LinearOpMode
        bufferSize: The amount at which the controller position can be off
        Return Type: Boolean
     */
-    public boolean checkingBounds(double posX,double posY,double bufferSize)
-    {
-        //Assigning variables for the x & y positions of the analog stick
-        double gameStickX = gamepad1.right_stick_x;
-        double gameStickY = gamepad1.right_stick_y;
 
-        //Checks if the analog stick position is in the same quadrant as the targets positon
-        if (Math.signum(gameStickX ) != Math.signum(posX) || Math.signum(gameStickY) != Math.signum(posY))
-        {
-            return false;
-        }
-
-//Distance between the targets position and the analog sticks positon
-        double dx = gameStickX - posX;
-        double dy = gameStickY - posY;
-
-//Use Pythagoras’ theorem to calculate the squared distance between the positions
-//It allows you to find the disctance between the target position and the controller position
-        double distanceSquared = dx * dx + dy * dy;
-
-//Returns a boolean value if the analog positon is inside the targets positons ( including the buffer :) )
-        return distanceSquared <= bufferSize * bufferSize;
-    }
 }

@@ -16,6 +16,7 @@ public class AutonWallStartRed extends LinearOpMode
 
     CRServo carousel;
 
+
     double motorSpeed = 0.2;
 
     @Override
@@ -45,7 +46,7 @@ public class AutonWallStartRed extends LinearOpMode
             StrafeRight();
             TurnRight();
             sleep(1000);
-            Shoot(2800,5);
+            Shoot(1750,5);
 
         }
     }
@@ -78,6 +79,8 @@ public class AutonWallStartRed extends LinearOpMode
 
         telemetry.addData("joystick X:", gamepad1.right_stick_x);
         setMotorsPower(-motorSpeed, -motorSpeed, -motorSpeed, -motorSpeed);
+        sleep(1000);
+        setMotorsPower(0,0,0,0);
 
 
     }
