@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp(name = "VvhsTeleop")
@@ -69,16 +70,38 @@ public class VvhsTeleop extends LinearOpMode
         outputRight.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         telemetry.addData("Initia", "working");
-        while(opModeIsActive())
-        {
+
+        while(opModeIsActive()) {
             ChangeMotorPowerSpeed();
-            ForwardMovement();
-            BackwardMovement();
-            StrafeLeft();
-            StrafeRight();
+            if (gamepad1.left_stick_y < -0.2 && (gamepad1.left_stick_x > -0.5 && gamepad1.left_stick_x < 0.5))// if gamepad1 left joystick is pushed up
+            {
+                ForwardMovement();
+            }
+            else if (gamepad1.left_stick_y > 0.2 && (gamepad1.left_stick_x >= -0.5 && gamepad1.left_stick_x <= 0.5))
+            {
+                BackwardMovement();
+            }
+            else if (gamepad1.left_stick_x < -0.2 && (gamepad1.left_stick_y < 0.5 && gamepad1.left_stick_y > -0.5))
+            {
+                StrafeLeft();
+            }
+            else if(gamepad1.left_stick_x> 0.2 && (gamepad1.left_stick_y < 0.5 && gamepad1.left_stick_y > -0.5))
+            {
+                StrafeRight();
+            }
+            else{setMotorsPower(0,0,0,0);}
+
+            if(gamepad1.right_stick_x>0)
+            {
+                TurnRight();
+            }
+            else if(gamepad1.right_stick_x<0)
+            {
+                TurnLeft();
+            }
+            else{}
+
             ServoMovement();
-            TurnRight();
-            TurnLeft();
             LaunchMotors(1750);
 //            ChangeOutputMotorSpeed();
             telemetry.update();
@@ -114,42 +137,25 @@ public class VvhsTeleop extends LinearOpMode
     }
     public void ForwardMovement()
     {
-        if (gamepad1.left_stick_y < 0 && (gamepad1.left_stick_x>-0.4 && gamepad1.left_stick_x<0.4))// if gamepad1 left joystick is pushed up
-        {
-            telemetry.addData("Left Joy Stick Y", gamepad1.left_stick_y);
-
-
-            //Move the robot in the forward direction
-            setMotorsPower(-motorSpeed, motorSpeed, -motorSpeed, motorSpeed);
-            //                 fL,    FR,             RL           Rr
-        }
-//        if (gamepad1.left_stick_y > 0.0 && gamepad1.left_stick_x < 0.0)//forward left diagonal
-//        {
-//            setMotorsPower(0.0, -motorSpeed, motorSpeed, 0.0);
-//        }
+        telemetry.addData("Left Joy Stick Y", gamepad1.left_stick_y);
+        //Move the robot in the forward direction
+        setMotorsPower(-motorSpeed, motorSpeed, -motorSpeed, motorSpeed);
+        //                 fL,    FR,             RL           Rr
+//      if (gamepad1.left_stick_y > 0.0 && gamepad1.left_stick_x < 0.0)//forward left diagonal
+//      {
+//          setMotorsPower(0.0, -motorSpeed, motorSpeed, 0.0);
+//      }
 //
-//        if (gamepad1.left_stick_y > 0.0 && gamepad1.left_stick_x > 0.0)//forward right diagonal
-//        {
-//            setMotorsPower(motorSpeed, 0.0, 0.0, -motorSpeed);
-//        }
-        else
-        {
-            FrontLeft.setPower(0.0);
-            FrontRight.setPower(0.0);
-            RearLeft.setPower(0.0);
-            RearRight.setPower(0.0);
-        }
+//      if (gamepad1.left_stick_y > 0.0 && gamepad1.left_stick_x > 0.0)//forward right diagonal
+//      {
+//          setMotorsPower(motorSpeed, 0.0, 0.0, -motorSpeed);
+//      }
     }
     public void BackwardMovement()
     {
-        if(gamepad1.left_stick_y > 0)// straight backward
-        {
-            telemetry.addData("Left Joy Stick -Y", "called");
-
-
-            //Move the robot in the reverse direction
-            setMotorsPower(motorSpeed,-motorSpeed,motorSpeed,-motorSpeed);
-        }
+        telemetry.addData("Left Joy Stick -Y", "called");
+        setMotorsPower(motorSpeed,-motorSpeed,motorSpeed,-motorSpeed);
+    }
 //        if (gamepad1.left_stick_y < 0.0 && gamepad1.left_stick_x < 0.0)//Back left diagonal
 //        {
 //            setMotorsPower(-motorSpeed, 0.0, 0.0, motorSpeed);
@@ -158,63 +164,22 @@ public class VvhsTeleop extends LinearOpMode
 //        if (gamepad1.left_stick_y < 0.0 && gamepad1.left_stick_x > 0)//Back right diagonal
 //        {
 //            setMotorsPower(0.0, motorSpeed, -motorSpeed, 0.0);
-        //}// I love typing documentation
-        else
-        {
-            FrontLeft.setPower(0.0);
-            FrontRight.setPower(0.0);
-            RearLeft.setPower(0.0);
-            RearRight.setPower(0.0);
-        }
-    }
+
     public void StrafeLeft()//Commments are pog
     {
-        //will turn left
-        //turn left code
-
-
         telemetry.addData("joystick X:", gamepad1.left_stick_x);
-        if(gamepad1.left_stick_x<0 && (gamepad1.left_stick_y<0.5 && gamepad1.left_stick_y>-0.5))
-        {
-            setMotorsPower(motorSpeed,motorSpeed,-motorSpeed,-motorSpeed);
-        }
-        else
-        {
-            FrontLeft.setPower(0.0);
-            FrontRight.setPower(0.0);
-            RearLeft.setPower(0.0);
-            RearRight.setPower(0.0);
-
-
-        }//This is a comment
+        setMotorsPower(motorSpeed,motorSpeed,-motorSpeed,-motorSpeed);
     }
     public void StrafeRight()
     {
-
-
-        //will move right
-        if(gamepad1.left_stick_x>0)
-        {
-            telemetry.addData("joystick X:", gamepad1.left_stick_x);
-            setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,motorSpeed);
-//            setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,-motorSpeed); ROTATE RIGHT????
-        }
-        else {
-            FrontLeft.setPower(0.0);
-            FrontRight.setPower(0.0);
-            RearLeft.setPower(0.0);
-            RearRight.setPower(0.0);
-
-
-        }
+        telemetry.addData("joystick X:", gamepad1.left_stick_x);
+        setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,motorSpeed);
+//       setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,-motorSpeed); ROTATE RIGHT????
     }
     public void TurnRight()
     {
-        if(gamepad1.right_stick_x>0)
-        {
-            telemetry.addData("joystick X:", gamepad1.right_stick_x);
-            setMotorsPower(-motorSpeed, -motorSpeed, -motorSpeed, -motorSpeed);
-        }
+        telemetry.addData("joystick X:", gamepad1.right_stick_x);
+        setMotorsPower(-motorSpeed, -motorSpeed, -motorSpeed, -motorSpeed);
     }
     public void TurnLeft()
     {
@@ -262,6 +227,12 @@ public class VvhsTeleop extends LinearOpMode
             telemetry.addData("Shooting Motor Speed", outputRight.getPower());
             outputRight.setVelocity(outputMotorVelocity);
             outputLeft.setVelocity(outputMotorVelocity);
+            boolean leftIsInRange = outputLeft.getVelocity() >= 1740 && outputLeft.getVelocity() <= 1760;
+            boolean rightIsInRange = outputRight.getVelocity() >= 1740 && outputRight.getVelocity() <= 1760;
+            if(leftIsInRange && rightIsInRange)
+            {
+                gamepad2.rumble(0.5, 0.5, 500);
+            }
         }
         else
         {
