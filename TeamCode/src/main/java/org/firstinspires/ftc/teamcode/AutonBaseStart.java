@@ -42,6 +42,7 @@ public class AutonBaseStart extends LinearOpMode
         {
             driveBackward(0.3, 3000);// Drive backward at 50% power for 3 seconds
             shoot(1200, 3000);// Shoot at 2000 velocity for 3 seconds
+            telemetry.update();
         }
     }
     public void setMotorsPower(double fLSpeed,double fRSpeed,double rLSpeed,double rRSpeed)//function to set all motors to the same speed
