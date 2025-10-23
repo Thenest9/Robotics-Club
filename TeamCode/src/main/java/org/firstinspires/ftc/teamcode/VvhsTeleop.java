@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 
 @TeleOp(name = "VvhsTeleop")
@@ -32,6 +31,8 @@ public class VvhsTeleop extends LinearOpMode
 
     CRServo carousel;
 
+    //int speedIndex = 0;
+    //double[] speeds = {0.1,0.3,0.6,1};
 
     //left clockwise
     //right counter
@@ -70,38 +71,16 @@ public class VvhsTeleop extends LinearOpMode
         outputRight.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         telemetry.addData("Initia", "working");
-
-        while(opModeIsActive()) {
+        while(opModeIsActive())
+        {
             ChangeMotorPowerSpeed();
-            if (gamepad1.left_stick_y < -0.2 && (gamepad1.left_stick_x > -0.5 && gamepad1.left_stick_x < 0.5))// if gamepad1 left joystick is pushed up
-            {
-                ForwardMovement();
-            }
-            else if (gamepad1.left_stick_y > 0.2 && (gamepad1.left_stick_x >= -0.5 && gamepad1.left_stick_x <= 0.5))
-            {
-                BackwardMovement();
-            }
-            else if (gamepad1.left_stick_x < -0.2 && (gamepad1.left_stick_y < 0.5 && gamepad1.left_stick_y > -0.5))
-            {
-                StrafeLeft();
-            }
-            else if(gamepad1.left_stick_x> 0.2 && (gamepad1.left_stick_y < 0.5 && gamepad1.left_stick_y > -0.5))
-            {
-                StrafeRight();
-            }
-            else{setMotorsPower(0,0,0,0);}
-
-            if(gamepad1.right_stick_x>0)
-            {
-                TurnRight();
-            }
-            else if(gamepad1.right_stick_x<0)
-            {
-                TurnLeft();
-            }
-            else{}
-
+            ForwardMovement();
+            BackwardMovement();
+            StrafeLeft();
+            StrafeRight();
             ServoMovement();
+            TurnRight();
+            TurnLeft();
             LaunchMotors(1750);
 //            ChangeOutputMotorSpeed();
             telemetry.update();
@@ -116,15 +95,17 @@ public class VvhsTeleop extends LinearOpMode
         {
             telemetry.addData("dpad_up", "called");
             //If motor speed is less then 1 then increase by .1
+            //speedIndex += speedIndex < speeds.length - 1? 1 : 0;
             motorSpeed += motorSpeed < 0.9 ? 0.1 : 0;
         }
         if(gamepad1.dpadDownWasPressed())//M2
         {
             telemetry.addData("dpad_down", "called");
             //If motor speed is greater then -1 then decrease by .1
+            //speedIndex += speedIndex > 0 ? -1 : 0;
             motorSpeed += motorSpeed > 0.2 ? -0.1 : 0;
         }
-
+        //motorSpeed = speeds[speedIndex];
 
         telemetry.addData("motor_speed", motorSpeed);
     }
@@ -137,25 +118,33 @@ public class VvhsTeleop extends LinearOpMode
     }
     public void ForwardMovement()
     {
-        telemetry.addData("Left Joy Stick Y", gamepad1.left_stick_y);
-        //Move the robot in the forward direction
-        setMotorsPower(-motorSpeed, motorSpeed, -motorSpeed, motorSpeed);
-        //                 fL,    FR,             RL           Rr
-//      if (gamepad1.left_stick_y > 0.0 && gamepad1.left_stick_x < 0.0)//forward left diagonal
-//      {
-//          setMotorsPower(0.0, -motorSpeed, motorSpeed, 0.0);
-//      }
-//
-//      if (gamepad1.left_stick_y > 0.0 && gamepad1.left_stick_x > 0.0)//forward right diagonal
-//      {
-//          setMotorsPower(motorSpeed, 0.0, 0.0, -motorSpeed);
-//      }
+        if (gamepad1.left_stick_y < 0 && (gamepad1.left_stick_x>-0.5 && gamepad1.left_stick_x<0.5))// if gamepad1 left joystick is pushed up
+        {
+            telemetry.addData("Left Joy Stick Y", gamepad1.left_stick_y);
+
+
+            //Move the robot in the forward direction
+            setMotorsPower(-motorSpeed, motorSpeed, -motorSpeed, motorSpeed);
+            //                 fL,    FR,             RL           Rr
+        }
+        else
+        {
+            FrontLeft.setPower(0.0);
+            FrontRight.setPower(0.0);
+            RearLeft.setPower(0.0);
+            RearRight.setPower(0.0);
+        }
     }
     public void BackwardMovement()
     {
-        telemetry.addData("Left Joy Stick -Y", "called");
-        setMotorsPower(motorSpeed,-motorSpeed,motorSpeed,-motorSpeed);
-    }
+        if(gamepad1.left_stick_y > 0)// straight backward
+        {
+            telemetry.addData("Left Joy Stick -Y", "called");
+
+
+            //Move the robot in the reverse direction
+            setMotorsPower(motorSpeed,-motorSpeed,motorSpeed,-motorSpeed);
+        }
 //        if (gamepad1.left_stick_y < 0.0 && gamepad1.left_stick_x < 0.0)//Back left diagonal
 //        {
 //            setMotorsPower(-motorSpeed, 0.0, 0.0, motorSpeed);
@@ -164,22 +153,65 @@ public class VvhsTeleop extends LinearOpMode
 //        if (gamepad1.left_stick_y < 0.0 && gamepad1.left_stick_x > 0)//Back right diagonal
 //        {
 //            setMotorsPower(0.0, motorSpeed, -motorSpeed, 0.0);
-
+        //}// I love typing documentation
+        else
+        {
+            FrontLeft.setPower(0.0);
+            FrontRight.setPower(0.0);
+            RearLeft.setPower(0.0);
+            RearRight.setPower(0.0);
+        }
+    }
     public void StrafeLeft()//Commments are pog
     {
-        telemetry.addData("joystick X:", gamepad1.left_stick_x);
-        setMotorsPower(motorSpeed,motorSpeed,-motorSpeed,-motorSpeed);
+        //will turn left
+        //turn left code
+
+
+//        telemetry.addData("joystick X:", gamepad1.left_stick_x);
+
+        telemetry.addData("Left Joystick:", gamepad1.left_stick_x+" , "+ gamepad1.left_stick_y);
+        if(gamepad1.left_stick_x<0)
+        {
+            setMotorsPower(motorSpeed,motorSpeed,-motorSpeed,-motorSpeed);
+        }
+        else
+        {
+            FrontLeft.setPower(0.0);
+            FrontRight.setPower(0.0);
+            RearLeft.setPower(0.0);
+            RearRight.setPower(0.0);
+
+
+        }//This is a comment
     }
     public void StrafeRight()
     {
-        telemetry.addData("joystick X:", gamepad1.left_stick_x);
-        setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,motorSpeed);
-//       setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,-motorSpeed); ROTATE RIGHT????
+
+
+        //will move right
+        if(gamepad1.left_stick_x>0)
+        {
+            telemetry.addData("joystick X:", gamepad1.left_stick_x);
+            setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,motorSpeed);
+//            setMotorsPower(-motorSpeed,-motorSpeed,motorSpeed,-motorSpeed); ROTATE RIGHT????
+        }
+        else {
+            FrontLeft.setPower(0.0);
+            FrontRight.setPower(0.0);
+            RearLeft.setPower(0.0);
+            RearRight.setPower(0.0);
+
+
+        }
     }
     public void TurnRight()
     {
-        telemetry.addData("joystick X:", gamepad1.right_stick_x);
-        setMotorsPower(-motorSpeed, -motorSpeed, -motorSpeed, -motorSpeed);
+        if(gamepad1.right_stick_x>0)
+        {
+            telemetry.addData("joystick X:", gamepad1.right_stick_x);
+            setMotorsPower(-motorSpeed, -motorSpeed, -motorSpeed, -motorSpeed);
+        }
     }
     public void TurnLeft()
     {
@@ -212,7 +244,7 @@ public class VvhsTeleop extends LinearOpMode
         }
         else
         {
-             carousel.setPower(0.0);
+            carousel.setPower(0.0);
 //            rightIntake.setPower(0.0);
         }
     }
@@ -227,12 +259,6 @@ public class VvhsTeleop extends LinearOpMode
             telemetry.addData("Shooting Motor Speed", outputRight.getPower());
             outputRight.setVelocity(outputMotorVelocity);
             outputLeft.setVelocity(outputMotorVelocity);
-            boolean leftIsInRange = outputLeft.getVelocity() >= 1740 && outputLeft.getVelocity() <= 1760;
-            boolean rightIsInRange = outputRight.getVelocity() >= 1740 && outputRight.getVelocity() <= 1760;
-            if(leftIsInRange && rightIsInRange)
-            {
-                gamepad2.rumble(0.5, 0.5, 500);
-            }
         }
         else
         {
